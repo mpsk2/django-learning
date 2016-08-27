@@ -1,5 +1,4 @@
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -37,4 +36,9 @@ class PostUpdate(UpdateView):
     model = Post
     success_url = reverse_lazy('blog:post_list')
     fields = ['title', 'content']
+
+
+class PostDetail(DetailView):
+    model = Post
+    context_object_name = 'post'
 
