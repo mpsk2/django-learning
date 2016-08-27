@@ -25,4 +25,5 @@ urlpatterns = [
 
     # blog with posts and comments
     url(r'^blog/', include('blog.urls', namespace='blog')),
+    url(r'^accounts/', include('allauth.urls')),
 ]
