@@ -1,4 +1,4 @@
-from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic import ListView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -30,3 +30,11 @@ class PostDelete(DeleteView):
     model = Post
     success_url = reverse_lazy('blog:post_list')
     context_object_name = 'post'
+
+
+# TODO(mps): ACCEPTS ANYONE TO UPDATE!!!!
+class PostUpdate(UpdateView):
+    model = Post
+    success_url = reverse_lazy('blog:post_list')
+    fields = ['title', 'content']
+
