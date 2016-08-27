@@ -3,7 +3,6 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404
 
 from .models import Post, Comment
