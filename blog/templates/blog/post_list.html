@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Blog - List{% endblock %}
+{% block content %}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for post in posts %}
+        <tr>
+            <td>{{ post.title }}</td>
+            <td></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% if is_paginated %}
+    <div class="pagination">
+        <span class="page-links">
+            {% if page_obj.has_previous %}
+                <a href="{% url "blog:post_list" %}?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="page-current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="{% url "blog:post_list" %}?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+{% endif %}
+<br>
+<a href="{% url "blog:post_new" %}">New</a>
+{% endblock %}
