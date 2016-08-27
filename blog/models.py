@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 
 
 class Publishable(models.Model):
-    creator = models.ForeignKey(User)
-    creation_date = models.DateTimeField(auto_now_add=True)
-    last_modification_date = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True

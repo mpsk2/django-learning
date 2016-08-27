@@ -11,3 +11,11 @@ class PostCreate(CreateView):
     model = Post
     success_url = reverse_lazy('home')
     fields = ['title', 'content']
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('blog:home')
