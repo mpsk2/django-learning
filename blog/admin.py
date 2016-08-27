@@ -13,4 +13,5 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    pass
+    date_hierarchy = 'modified_at'
+    list_display = ('id', 'post', 'short_content', 'created_by', 'created_at', 'modified_at')
