@@ -21,3 +21,4 @@ class Post(Publishable):
 
 class Comment(Publishable):
     content = models.TextField()
+    post = models.ForeignKey(Post)
