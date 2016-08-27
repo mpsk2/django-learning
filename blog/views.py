@@ -3,8 +3,10 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseNotAllowed
+from django.shortcuts import get_object_or_404
 
-from .models import Post
+from .models import Post, Comment
 
 
 class CreatorRequiredMixin:
@@ -33,12 +35,14 @@ class PostList(ListView):
     paginate_by = 10
 
 
+@method_decorator(login_required, 'dispatch')
 class PostDelete(CreatorRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('blog:post_list')
     context_object_name = 'post'
 
 
+@method_decorator(login_required, 'dispatch')
 class PostUpdate(CreatorRequiredMixin, UpdateView):
     model = Post
     success_url = reverse_lazy('blog:post_list')
@@ -49,3 +53,15 @@ class PostDetail(DetailView):
     model = Post
     context_object_name = 'post'
 
+
+@method_decorator(login_required, 'dispatch')
+class CommentCreate(CreateView):
+    model = Comment
+    fields = ['content']
+    success_url = reverse_lazy('blog:post_list')
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        obj.post = get_object_or_404(Post, id=self.kwargs['post_id'])
+        return super().form_valid(form)
