@@ -13,10 +13,22 @@
         {% for post in posts %}
         <tr>
             <td>{{ post.title }}</td>
-            <td>
-                <a href="{% url "blog:post_detail" post.id %}">details</a>
-                <a href="{% url "blog:post_edit" post.id %}">edit</a>
-                <a href="{% url "blog:post_delete" post.id %}">delete</a>
+            <td class="buttons-column">
+                <a href="{% url "blog:post_detail" post.id %}">
+                    <button type="button" class="btn btn-info btn-small">
+                        <i class="fa fa-info"></i>
+                    </button>
+                </a>
+                <a href="{% url "blog:post_edit" post.id %}">
+                    <button type="button" class="btn btn-neutral btn-small">
+                        <i class="fa fa-pencil"></i>
+                    </button>
+                </a>
+                <a href="{% url "blog:post_delete" post.id %}">
+                    <button type="button" class="btn btn-danger btn-small">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </a>
             </td>
         </tr>
         {% endfor %}
