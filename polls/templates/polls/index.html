@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Polls - list{% endblock %}
+{% block app_imports %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'polls/css/style.css' %}" />
+{% endblock %}
 {% block content %}
 {% if latest_question_list %}
     <ul>
