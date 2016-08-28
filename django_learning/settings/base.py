@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'blog',
+    'polls',
 ]
 
 MIDDLEWARE = [

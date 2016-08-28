@@ -7,7 +7,7 @@ install:
   - pip install coveralls
 script:
   - python manage.py test
-  - coverage run --source=django_learning,blog manage.py test
+  - coverage run --source=django_learning,blog,polls manage.py test
 env:
   - DJANGO=1.10
 after_success: coveralls
