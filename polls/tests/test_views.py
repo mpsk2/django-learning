@@ -1,40 +1,32 @@
 import datetime
 
+from django.test import TestCase, Client
+from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.test import TestCase
-from django.urls import reverse
 
-from ...models import Question
+from polls.models import Question
 
 
-class QuestionMethodTests(TestCase):
+class IndexTestCase(TestCase):
+    def test_simple(self):
+        Question.objects.create(question_text='Q1', pub_date=timezone.now())
+        Question.objects.create(question_text='Q2', pub_date=timezone.now())
+        url = reverse('polls:index')
+        client = Client()
+        response = client.get(url)
 
-    def test_was_published_recently_with_future_question(self):
-        """
-        was_published_recently() should return False for questions whose
-        pub_date is in the future.
-        """
-        time = timezone.now() + datetime.timedelta(days=30)
-        future_question = Question(pub_date=time)
-        self.assertIs(future_question.was_published_recently(), False)
+        self.assertContains(response, 'Q1', status_code=200)
+        self.assertContains(response, 'Q2', status_code=200)
 
-    def test_was_published_recently_with_old_question(self):
-        """
-        was_published_recently() should return False for questions whose
-        pub_date is older than 1 day.
-        """
-        time = timezone.now() - datetime.timedelta(days=30)
-        old_question = Question(pub_date=time)
-        self.assertIs(old_question.was_published_recently(), False)
 
-    def test_was_published_recently_with_recent_question(self):
-        """
-        was_published_recently() should return True for questions whose
-        pub_date is within the last day.
-        """
-        time = timezone.now() - datetime.timedelta(hours=1)
-        recent_question = Question(pub_date=time)
-        self.assertIs(recent_question.was_published_recently(), True)
+class DetailTestCase(TestCase):
+    def test_simple(self):
+        Question.objects.create(question_text='Q1', pub_date=timezone.now())
+        url = reverse('polls:detail', args=(1,))
+        client = Client()
+        response = client.get(url)
+
+        self.assertContains(response, 'Q1', status_code=200)
 
 
 def create_question(question_text, days):
@@ -117,3 +109,10 @@ class QuestionIndexDetailTests(TestCase):
         url = reverse('polls:detail', args=(past_question.id,))
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
+
+
+class VoteTests(TestCase):
+    def test_no_question(self):
+        url = reverse('polls:vote', args=(1,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
