@@ -12,6 +12,10 @@ urlpatterns = [
 
     # blog with posts and comments
     url(r'^blog/', include('blog.urls', namespace='blog')),
+
+    # tutorial app
+    url(r'^polls/', include('polls.urls', namespace='polls')),
+
     url(r'^accounts/', include('allauth.urls')),
 ]
 
