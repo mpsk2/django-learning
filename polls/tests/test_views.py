@@ -4,7 +4,7 @@ from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
-from polls.models import Question
+from polls.models import Choice, Question
 
 
 class IndexTestCase(TestCase):
@@ -116,3 +116,25 @@ class VoteTests(TestCase):
         url = reverse('polls:vote', args=(1,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+
+    def test_valid(self):
+        question = create_question(question_text='go', days=0)
+        choice = Choice.objects.create(question=question, choice_text='abc')
+
+        self.assertEqual(Choice.objects.first().votes, 0)
+
+        url = reverse('polls:vote', args=(question.id,))
+        response = Client().post(url, {'choice': choice.id})
+
+        self.assertEqual(Choice.objects.first().votes, 1)
+        self.assertRedirects(response, reverse('polls:results', kwargs={'pk': question.id}))
+
+    def test_no_question_fails(self):
+        question = create_question(question_text='go', days=0)
+        Choice.objects.create(question=question, choice_text='abc')
+
+        url = reverse('polls:vote', args=(question.id,))
+        response = Client().post(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['error_message'], 'You didn\'t select a choice.')
