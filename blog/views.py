@@ -1,4 +1,4 @@
-from django.views.generic import ListView, DetailView, DeleteView, CreateView, UpdateView
+from django.views import generic
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -17,7 +17,7 @@ class CreatorRequiredMixin:
 
 
 @method_decorator(login_required, 'dispatch')
-class PostCreate(CreateView):
+class PostCreate(generic.CreateView):
     model = Post
     success_url = reverse_lazy('blog:post_list')
     fields = ['title', 'content']
@@ -28,33 +28,33 @@ class PostCreate(CreateView):
         return super().form_valid(form)
 
 
-class PostList(ListView):
+class PostList(generic.ListView):
     model = Post
     context_object_name = 'posts'
     paginate_by = 10
 
 
 @method_decorator(login_required, 'dispatch')
-class PostDelete(CreatorRequiredMixin, DeleteView):
+class PostDelete(CreatorRequiredMixin, generic.DeleteView):
     model = Post
     success_url = reverse_lazy('blog:post_list')
     context_object_name = 'post'
 
 
 @method_decorator(login_required, 'dispatch')
-class PostUpdate(CreatorRequiredMixin, UpdateView):
+class PostUpdate(CreatorRequiredMixin, generic.UpdateView):
     model = Post
     success_url = reverse_lazy('blog:post_list')
     fields = ['title', 'content']
 
 
-class PostDetail(DetailView):
+class PostDetail(generic.DetailView):
     model = Post
     context_object_name = 'post'
 
 
 @method_decorator(login_required, 'dispatch')
-class CommentCreate(CreateView):
+class CommentCreate(generic.CreateView):
     model = Comment
     fields = ['content']
     success_url = reverse_lazy('blog:post_list')

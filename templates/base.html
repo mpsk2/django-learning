@@ -8,6 +8,7 @@
 	<div class="container">
 	    {% include '_nav.html' %}
 		{% block content %}<h1>CONTENT NOT SET</h1>{% endblock %}
+        <p>URL of this page: {{ request.get_full_path }}</p>
 	</div>
 </body>
 </html>
