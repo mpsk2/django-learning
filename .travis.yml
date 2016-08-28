@@ -3,11 +3,10 @@ python:
   - "3.4"
   - "3.5"
 install:
-  - pip install -q -r requirements/dev.txt
-  - pip install coveralls
+  - pip install -q -r requirements/test.txt
 script:
-  - python manage.py test
-  - coverage run --source=django_learning,blog,polls manage.py test
+  - coverage run --source=django_learning,blog,polls manage.py test --settings=django_learning.settings.test
 env:
   - DJANGO=1.10
-after_success: coveralls
+after_success:
+  coveralls
