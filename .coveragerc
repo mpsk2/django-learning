@@ -3,7 +3,7 @@ branch = true
 include =
   blog/*
   polls/*
-  range/*
+  rango/*
 omit =
   */tests/*
   */migrations/*
