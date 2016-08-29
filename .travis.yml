@@ -2,11 +2,15 @@ language: python
 python:
   - "3.4"
   - "3.5"
+  - "3.5-dev"
+  - "nightly"
 install:
   - pip install -q -r requirements/test.txt
+  - pip install -q Django==$DJANGO_VERSION
 script:
-  - coverage run --source=django_learning,blog,polls manage.py test --settings=django_learning.settings.test
+  - python -c "import django; print(django.get_version())"
+  - coverage run --source=django_learning,blog,polls,rango manage.py test --settings=django_learning.settings.test
 env:
-  - DJANGO=1.10
+  - DJANGO_VERSION=1.10
 after_success:
   coveralls
